@@ -61,16 +61,12 @@ function insertarEmpleado(){
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
     userAdmin.fecha = hoy.toUTCString();
-
-    console.log(generarId);
     crearEmpleado();
 }
 
 function crearEmpleado(){
     lista.push({...userAdmin});
-
-    
-    return lista;
+    mostrarUsuariosTabla(lista)
 }
 
 
@@ -80,27 +76,15 @@ function crearEmpleado(){
 
 //READ
 
-//lista de usuarios
-let users = [
-    { id: 1, nombre: "Andres", apellido: "Pacheco", edad: 38, profesion: "developer", created_at: "2022-09-26T06:25:21.118Z" },
-    { id: 2, nombre: "Andrea", apellido: "Sanchez", edad: 25, profesion: "profesor", created_at: "2022-04-18T14:14:32.879Z" },
-    { id: 3, nombre: "Julia", apellido: "Ochoa", edad: 32, profesion: "musico", created_at: "2021-12-14T11:53:38.279Z" },
-    { id: 4, nombre: "Samuel", apellido: "Martinez", edad: 29, profesion: "programador", created_at: "2022-01-26T03:31:15.202Z" },
-    { id: 5, nombre: "Roberto", apellido: "Mattos", edad: 40, profesion: "chef", created_at: "2022-07-27T02:06:22.760Z" },
-    { id: 6, nombre: "Mercedes", apellido: "Sanchez", edad: 35, profesion: "veterinario", created_at: "2022-05-01T22:06:35.864Z" },
-  ]
-  
-  
-  
   function ordenarPorAtributo(atributo) {
   
-    let validInput = ["id", "nombre", "apellido", "edad", "profesion", "fecha", "fecha actualizada"]
+    let validInput = ["id", "nombre", "apellido", "edad", "fecha", "fecha actualizada"]
   
     if (validInput.includes(atributo)) {
-      if (atributo === "edad" || atributo === "id") {
-        users.sort((a, b) => a[atributo] - b[atributo])
+      if (atributo === "edad" || atributo === "id" || atributo =="fecha") {
+        lista.sort((a, b) => a[atributo] - b[atributo])
       } else {
-        users.sort((a, b) => a[atributo].localeCompare(b[atributo]));
+        lista.sort((a, b) => a[atributo].localeCompare(b[atributo]));
       }
     } else {
       console.log("Debes ingresar un atributo válido");
@@ -109,7 +93,7 @@ let users = [
   
   
   //mostrar encabezado
-  const columnas = ["id", "nombre", "apellido", "edad", "profesion", "fecha", "fecha actualizada"]
+  const columnas = ["id", "nombre", "apellido", "edad", "fecha", "fecha actualizada"]
   const table = document.createElement("table")
   table.classList.add("table", "table-bordered")
   
@@ -123,7 +107,7 @@ let users = [
       ordenarPorAtributo(e.target.textContent)
       table.innerHTML = ""
       table.appendChild(thead)
-      mostrarUsuariosTabla(users)
+      mostrarUsuariosTabla(lista)
     })
     trHead.appendChild(th)
   })
@@ -132,20 +116,22 @@ let users = [
   root.appendChild(table)
   
   
-  
   //funcion mostrar los usuarios en la tabla
-  function mostrarUsuariosTabla(users) {
-    for (const index in users) {
+  function mostrarUsuariosTabla(lista) {
+    table.innerHTML = ""
+    table.append(thead)
+    for (const index in lista) {
       const tr = document.createElement("tr")
-      for (const key in users[index]) {
+      for (const key in lista[index]) {
         const td = document.createElement("td")
-        td.textContent = users[index][key]
+        td.textContent = lista[index][key]
         tr.append(td)
       }
       table.append(tr)
     }
+    console.log(lista)
   }
-  mostrarUsuariosTabla(users)
+  mostrarUsuariosTabla(lista)
   
   
   
@@ -154,6 +140,9 @@ let users = [
 const btnAñadir = document.createElement("button")
 btnAñadir.classList.add("btn", "btn-primary")
 btnAñadir.textContent = "Agregar usuario"
+btnAñadir.onclick=()=>{
+  insertarEmpleado()
+}
 
 const btnEditar = document.createElement("button")
 btnEditar.classList.add("btn", "btn-warning", "ms-2")
@@ -169,3 +158,4 @@ const botones = document.getElementById("botones")
 botones.appendChild(btnAñadir)
 botones.appendChild(btnEditar)
 botones.appendChild(btnEliminar)
+
